@@ -7,7 +7,7 @@ import java.awt.*;
  * --------
  * This class defines a rectangle indicates a mine 
  */
-public class Mine implements MineConstants {
+public class Mine {
 
 	public Mine(int size, int flag) {
 		// TODO Auto-generated constructor stub
@@ -43,7 +43,11 @@ public class Mine implements MineConstants {
 			g.setColor(Color.gray);
 		else
 			g.setColor(Color.green);
-		g.fillRect(x, y, size, size);
+		g.fillRect(x, y, size, size); // Fill the rectangle
+		g.setColor(Color.white);
+		Graphics2D g2 = (Graphics2D)g;
+		g2.setStroke(new BasicStroke(3.0f));
+		g2.drawRect(x, y, size, size); //Draw the outline
 		if (visible) { // If the rectangle is visible
 			if (flag == -1) { // flag == -1 indicates that a land mine insides
 								// this rectangle
