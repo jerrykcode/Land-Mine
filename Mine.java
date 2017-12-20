@@ -9,8 +9,9 @@ import java.awt.*;
  */
 public class Mine implements MineConstants {
 
-	public Mine(int flag) {
+	public Mine(int size, int flag) {
 		// TODO Auto-generated constructor stub
+		this.size = size;
 		this.flag = flag;
 		visible = false;
 		hasSign = false;
@@ -42,21 +43,21 @@ public class Mine implements MineConstants {
 			g.setColor(Color.gray);
 		else
 			g.setColor(Color.green);
-		g.fillRect(x, y, MINE_SIZE, MINE_SIZE);
+		g.fillRect(x, y, size, size);
 		if (visible) { // If the rectangle is visible
 			if (flag == -1) { // flag == -1 indicates that a land mine insides
 								// this rectangle
 				g.setColor(Color.red);
-				g.fillOval(x + MINE_SIZE / 6, y + MINE_SIZE / 6, MINE_SIZE * 2 / 3, MINE_SIZE * 2 / 3);
+				g.fillOval(x + size / 6, y + size / 6, size * 2 / 3, size * 2 / 3);
 			} else if (flag != 0) {
 				g.setColor(Color.cyan);
-				g.drawString(" " + flag, x + MINE_SIZE / 3, y + MINE_SIZE * 2 / 3);
+				g.drawString(" " + flag, x + size / 3, y + size * 2 / 3);
 			}
 		} else if (hasSign) {// Not visible and there is a sign on it
 			// Draw the sign
 			g.setColor(Color.red);
-			int xPoints[] = { x + MINE_SIZE / 3, x + MINE_SIZE / 3, x + MINE_SIZE * 2 / 3 };
-			int yPoints[] = { y + MINE_SIZE / 3, y + MINE_SIZE * 2 / 3, y + MINE_SIZE / 2 };
+			int xPoints[] = { x + size / 3, x + size / 3, x + size * 2 / 3 };
+			int yPoints[] = { y + size / 3, y + size * 2 / 3, y + size / 2 };
 			int nPoints = xPoints.length;
 			g.fillPolygon(xPoints, yPoints, nPoints);
 		}
@@ -67,6 +68,7 @@ public class Mine implements MineConstants {
 						// if flag >= 0 && <= 8, flag is the number of land
 						// mines around
 						// this rectangle
+	private int size; //The size (width & height) of the rectangle
 	private boolean visible;// true if the rectangle is visible
 	private boolean hasSign;// true if there is a sign on the rectangle
 }
