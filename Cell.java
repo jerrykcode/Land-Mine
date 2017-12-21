@@ -38,12 +38,21 @@ public class Cell {
 		visible = true;
 	}
 
-	/** Adds a sign on a cell with a visibility equals false */
+	/** Adds a sign on a cell */
 	public void addSign() {
-		if (!visible)
-			hasSign = true;
+		hasSign = true;
 	}
 
+	/** Returns true if there is a sign on the cell */
+	public boolean hasSign() {
+		return hasSign;
+	}
+	
+	/** Removes the sign */
+	public void removeSign() {
+		hasSign = false;
+	}
+	
 	public void draw(Graphics g, int x, int y) {
 		if (visible)
 			g.setColor(Color.gray);

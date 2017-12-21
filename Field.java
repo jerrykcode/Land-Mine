@@ -53,7 +53,7 @@ public class Field {
 				cellsAround.add(cells[x + i][y + j]);
 			}
 		}
-		return (Cell[]) cellsAround.toArray();
+		return (Cell[]) cellsAround.toArray(new Cell[0]);
 	}
 
 	/* Private instance variables */
