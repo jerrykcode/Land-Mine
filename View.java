@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-public class View extends JPanel implements MineConstants {
+public class View extends JPanel{
 
 	public View(Field field) {
 		// TODO Auto-generated constructor stub
@@ -14,10 +14,12 @@ public class View extends JPanel implements MineConstants {
 	@Override
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
+		int mineWidth = getWidth()/field.getNColumns(); 
+		int mineHeight = getHeight()/field.getNRows();
 		for (int i = 0; i < field.getNRows(); i++)
 			for (int j = 0; j < field.getNColumns(); j++) {
 				Mine mine = field.getMineAt(i, j);
-				mine.draw(g, i * MINE_SIZE, j * MINE_SIZE);
+				mine.draw(g, i * mineWidth, j * mineHeight);
 			}
 	}
 	
