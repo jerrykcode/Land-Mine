@@ -5,7 +5,8 @@ import java.awt.*;
 /*
  * Min.java
  * --------
- * This class defines a rectangle indicates a mine 
+ * This class defines a cell with a flag indicates that a mine exists in the cell
+ * if the flag equals -1 or means the number of mines around this cell
  */
 public class Cell {
 
@@ -17,22 +18,22 @@ public class Cell {
 		hasSign = false;
 	}
 
-	/** Returns the flag of this rectangle */
+	/** Returns the flag of this cell */
 	public int getFlag() {
 		return flag;
 	}
 
-	/** Returns the visibility of the rectangle */
+	/** Returns the visibility of the cell */
 	public boolean getVisiblity() {
 		return visible;
 	}
 
-	/** Sets the visibility of the rectangle to be true */
+	/** Sets the visibility of the cell to be true */
 	public void setVisibility() {
 		visible = true;
 	}
 
-	/** Adds a sign on a rectangle with a visibility equals false */
+	/** Adds a sign on a cell with a visibility equals false */
 	public void addSign() {
 		if (!visible)
 			hasSign = true;
@@ -43,14 +44,14 @@ public class Cell {
 			g.setColor(Color.gray);
 		else
 			g.setColor(Color.green);
-		g.fillRect(x, y, size, size); // Fill the rectangle
+		g.fillRect(x, y, size, size); // Fill the rectangle indicates the cell
 		g.setColor(Color.white);
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setStroke(new BasicStroke(3.0f));
 		g2.drawRect(x, y, size, size); //Draw the outline
-		if (visible) { // If the rectangle is visible
+		if (visible) { // If the cell is visible
 			if (flag == -1) { // flag == -1 indicates that a land mine insides
-								// this rectangle
+								// this cell
 				g.setColor(Color.red);
 				g.fillOval(x + size / 6, y + size / 6, size * 2 / 3, size * 2 / 3);
 			} else if (flag != 0) {
@@ -68,11 +69,11 @@ public class Cell {
 	}
 
 	/* Private instance variables */
-	private int flag; // -1 indicates that a land mine insides this rectangle
+	private int flag; // -1 indicates that a land mine insides this cell
 						// if flag >= 0 && <= 8, flag is the number of land
 						// mines around
-						// this rectangle
-	private int size; //The size (width & height) of the rectangle
-	private boolean visible;// true if the rectangle is visible
-	private boolean hasSign;// true if there is a sign on the rectangle
+						// this cell
+	private int size; //The size (width & height) of the cell
+	private boolean visible;// true if the cell is visible
+	private boolean hasSign;// true if there is a sign on the cell
 }

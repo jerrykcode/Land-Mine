@@ -28,9 +28,9 @@ public class LandMine implements MineConstants {
 	}
 	
 	/*
-	 *  Initialize the field. Sets some of the mine rectangles to be an actual mine
-	 * (flag equals -1) randomly, and calculates the other mine rectangles' flag
-	 * by counting the number of actual mines around them.
+	 *  Initialize the field. Sets some of the cells to be cells with a mine in it
+	 * (flag equals -1) randomly, and calculates the other cells' flag
+	 * by counting the number of cells with mine around them.
 	 */
 	private static void initField() {
 		field = new Field(nRows, nColumns);
@@ -47,8 +47,8 @@ public class LandMine implements MineConstants {
 	private static int fwidth; //The width of the frame
 	private static int fheight; //The height of the frame
 	private static int nMines; //The number of mines
-	private static int mineSize; //The size(width&height) of the mine(a rectangle)
-	private static int nRows; //The number of rows of mines in the field
+	private static int mineSize; //The size(width&height) of the cell(a rectangle)
+	private static int nRows; //The number of rows of cells in the field
 	private static int nColumns; //The number of columns in the field
 	
 	/* private instance variables */

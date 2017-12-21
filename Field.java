@@ -14,7 +14,7 @@ public class Field {
 		// TODO Auto-generated constructor stub
 		this.nRows = nRows;
 		this.nColumns = nColumns;
-		mines = new Cell[nRows][nColumns];
+		cells = new Cell[nRows][nColumns];
 	}
 
 	/** Returns the number of rows of the field */
@@ -27,21 +27,21 @@ public class Field {
 		return nColumns;
 	}
 	
-	/** Places a mine at the position (x, y) in the field */
+	/** Places a cell at the position (x, y) in the field */
 	public void place(int x, int y, Cell mine) {
-		mines[x][y] = mine;
+		cells[x][y] = mine;
 	}
 
-	/** Returns the mine at position(x, y) in the field */
+	/** Returns the cell at position(x, y) in the field */
 	public Cell getMineAt(int x, int y) {
-		return mines[x][y];
+		return cells[x][y];
 	}
 
 	/**
-	 * Returns the mines around a specific mine at position(x, y) in the field
+	 * Returns the cells around a specific cell at position(x, y) in the field
 	 */
 	public Cell[] getMinesAround(int x, int y) {
-		ArrayList<Cell> minesAround = new ArrayList<Cell>();
+		ArrayList<Cell> cellsAround = new ArrayList<Cell>();
 		for (int i = -1; i < 2; i++) {
 			if (x + i < 0 || x + i > nColumns - 1)
 				continue;
@@ -50,14 +50,14 @@ public class Field {
 					continue;
 				if (y + j < 0 || y + j > nRows - 1)
 					continue;
-				minesAround.add(mines[x + i][y + j]);
+				cellsAround.add(cells[x + i][y + j]);
 			}
 		}
-		return (Cell[]) minesAround.toArray();
+		return (Cell[]) cellsAround.toArray();
 	}
 
 	/* Private instance variables */
 	int nRows; // The number of rows in the field
 	int nColumns; // The number of columns in the field
-	Cell mines[][]; // The mines in the field
+	Cell cells[][]; // The cells in the field
 }
