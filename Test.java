@@ -9,7 +9,7 @@ public class Test {
 		Field f = new Field(9, 9);
 		for (int i = 0; i < 9; i ++)
 			for (int j = 0; j < 9; j ++) {
-				f.place(i, j, new Mine(30, 8));
+				f.place(i, j, new Cell(30, 8));
 				f.getMineAt(i, j).setVisibility();
 			}
 		View v = new View(f);

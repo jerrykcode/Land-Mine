@@ -7,9 +7,9 @@ import java.awt.*;
  * --------
  * This class defines a rectangle indicates a mine 
  */
-public class Mine {
+public class Cell {
 
-	public Mine(int size, int flag) {
+	public Cell(int size, int flag) {
 		// TODO Auto-generated constructor stub
 		this.size = size;
 		this.flag = flag;

@@ -36,7 +36,7 @@ public class LandMine implements MineConstants {
 		field = new Field(nRows, nColumns);
 		for (int i = 0; i < field.getNRows(); i ++)
 			for (int j = 0; j < field.getNColumns(); j ++) {
-				field.place(i, j, new Mine(mineSize, 0));
+				field.place(i, j, new Cell(mineSize, 0));
 			}
 		
 	}

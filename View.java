@@ -18,7 +18,7 @@ public class View extends JPanel{
 		int mineHeight = getHeight()/field.getNRows();
 		for (int i = 0; i < field.getNRows(); i++)
 			for (int j = 0; j < field.getNColumns(); j++) {
-				Mine mine = field.getMineAt(i, j);
+				Cell mine = field.getMineAt(i, j);
 				mine.draw(g, i * mineWidth, j * mineHeight);
 			}
 	}
