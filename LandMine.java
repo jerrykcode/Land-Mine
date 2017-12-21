@@ -94,8 +94,10 @@ public class LandMine implements MineConstants , MouseListener {
 		if (cell.getVisiblity() == true) //The cell is visible
 			return;
 		if (e.isMetaDown()) { // If it is clicked by the right button
-			cell.addSign();
-			//cell.setVisibility();
+			if (cell.hasSign())
+				cell.removeSign();
+			else
+				cell.addSign();
 		}
 		else {
 			
