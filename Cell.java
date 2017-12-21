@@ -22,6 +22,11 @@ public class Cell {
 	public int getFlag() {
 		return flag;
 	}
+	
+	/** Sets the flag of the cell */
+	public void setFlag(int flag) {
+		this.flag = flag;
+	}
 
 	/** Returns the visibility of the cell */
 	public boolean getVisiblity() {

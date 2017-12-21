@@ -17,6 +17,7 @@ public class LandMine implements MineConstants {
 		// TODO Auto-generated method stub
 		fwidth = FRAME_WIDTH;
 		fheight = FRAME_HEIGHT;
+		nMines = N_MINES;
 		mineSize = MINE_SIZE;
 		nRows = N_MINE_ROW;
 		nColumns = N_MINE_COLUMN;
@@ -38,7 +39,12 @@ public class LandMine implements MineConstants {
 			for (int j = 0; j < field.getNColumns(); j ++) {
 				field.place(i, j, new Cell(mineSize, 0));
 			}
-		
+		for (int i = 0; i < nMines; i ++){
+			int x = rand.nextInt(nRows);
+			int y = rand.nextInt(nColumns);
+			if (field.getMineAt(x, y).getFlag() != -1)
+				;
+		}
 	}
 
 	/* Private instance variables */
