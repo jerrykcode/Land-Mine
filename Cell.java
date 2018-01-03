@@ -10,14 +10,26 @@ import java.awt.*;
  */
 public class Cell {
 
-	public Cell(int size, int flag) {
+	public Cell(int row, int column, int size, int flag) {
 		// TODO Auto-generated constructor stub
+		this.row = row;
+		this.column = column;
 		this.size = size;
 		this.flag = flag;
 		visible = false;
 		hasSign = false;
 	}
+	
+	/** Returns the row of the cell */
+	public int getRow() {
+		return row;
+	}
 
+	/** Returns the column of the cell */
+	public int getColumn() {
+		return column;
+	}
+	
 	/** Returns the size of the cell */
 	public int getSize() {
 		return size;
@@ -33,6 +45,16 @@ public class Cell {
 		this.flag = flag;
 	}
 
+	/** Returns true if there is a mine in the cell */
+	public boolean hasMine() {
+		return flag == -1;
+	}
+	
+	/** Sets the cell to the type which there is a mine in it */
+	public void setToHasMine() {
+		setFlag(-1);
+	}
+	
 	/** Returns the visibility of the cell */
 	public boolean getVisiblity() {
 		return visible;
@@ -88,6 +110,8 @@ public class Cell {
 	}
 
 	/* Private instance variables */
+	private int row;
+	private int column;
 	private int flag; // -1 indicates that a land mine insides this cell
 						// if flag >= 0 && <= 8, flag is the number of land
 						// mines around

@@ -27,33 +27,38 @@ public class Field {
 		return nColumns;
 	}
 	
-	/** Places a cell at the position (x, y) in the field */
-	public void place(int x, int y, Cell mine) {
-		cells[x][y] = mine;
+	/** Places a cell at the position (r, c) in the field */
+	public void place(int row, int column, Cell mine) {
+		cells[row][column] = mine;
 	}
 
-	/** Returns the cell at position(x, y) in the field */
-	public Cell getCellAt(int x, int y) {
-		return cells[x][y];
+	/** Returns the cell at position(r, c) in the field */
+	public Cell getCellAt(int row, int column) {
+		return cells[row][column];
 	}
 
 	/**
-	 * Returns the cells around a specific cell at position(x, y) in the field
+	 * Returns the cells around a specific cell at position(r, c) in the field
 	 */
-	public Cell[] getMinesAround(int x, int y) {
+	public Cell[] getCellsAround(int row, int column) {
 		ArrayList<Cell> cellsAround = new ArrayList<Cell>();
 		for (int i = -1; i < 2; i++) {
-			if (x + i < 0 || x + i > nColumns - 1)
+			if (row + i < 0 || row + i > nColumns - 1)
 				continue;
 			for (int j = -1; j < 2; j++) {
 				if (i == 0 && j == 0) // (x+i, y+j) is (x, y) itself
 					continue;
-				if (y + j < 0 || y + j > nRows - 1)
+				if (column + j < 0 || column + j > nRows - 1)
 					continue;
-				cellsAround.add(cells[x + i][y + j]);
+				cellsAround.add(cells[row + i][column + j]);
 			}
 		}
 		return (Cell[]) cellsAround.toArray(new Cell[0]);
+	}
+	
+	/** Returns the cells around a specific cell passed in as parameter */
+	public Cell[] getCellsAround(Cell cell) {
+		return getCellsAround(cell.getRow(), cell.getColumn());
 	}
 
 	/* Private instance variables */

@@ -3,18 +3,19 @@ package mine;
 import java.awt.event.MouseEvent;
 
 import java.awt.event.MouseListener;
-
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 import javax.swing.JFrame;
 
-
-public class LandMine implements MineConstants , MouseListener {
+public class LandMine implements MineConstants, MouseListener {
 
 	public LandMine() {
 		view.addMouseListener(this);
 	}
-	
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		init();
@@ -33,6 +34,7 @@ public class LandMine implements MineConstants , MouseListener {
 		cellSize = MINE_SIZE;
 		nRows = N_MINE_ROW;
 		nColumns = N_MINE_COLUMN;
+		gameOver = false;
 	}
 
 	/* Draws the initial mines. */
@@ -43,7 +45,7 @@ public class LandMine implements MineConstants , MouseListener {
 		frame = new JFrame();
 		frame.setSize(fwidth, fheight);
 		frame.setTitle("Land Mine");
-		frame. setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(view);
 		frame.setVisible(true);
 	}
@@ -57,28 +59,28 @@ public class LandMine implements MineConstants , MouseListener {
 		field = new Field(nRows, nColumns);
 		for (int i = 0; i < field.getNRows(); i++)
 			for (int j = 0; j < field.getNColumns(); j++) {
-				field.place(i, j, new Cell(cellSize, 0));
+				field.place(i, j, new Cell(i, j, cellSize, 0));
 			}
 		/* Sets some of the cells to be mine randomly */
 		for (int i = 0; i < nMines; i++) {
 			int x = rand.nextInt(nRows);
 			int y = rand.nextInt(nColumns);
-			if (field.getCellAt(x, y).getFlag() != -1) // If the cell at (x,
-														// y)is not a mine
-				field.getCellAt(x, y).setFlag(-1);// Sets it to be a mine
+			if (!field.getCellAt(x, y).hasMine()) // If the cell at (x,
+													// y)is not a mine
+				field.getCellAt(x, y).setToHasMine();// Sets it to be a mine
 			else
 				i--;
 		}
 		/* Calculates the flag of other cells */
 		for (int i = 0; i < nRows; i++)
 			for (int j = 0; j < nColumns; j++) {
-				if (field.getCellAt(i, j).getFlag() == -1) // If this cell is a
-															// mine
+				if (field.getCellAt(i, j).hasMine()) // If this cell has a
+														// mine
 					continue;
-				Cell[] cellsAround = field.getMinesAround(i, j);
+				Cell[] cellsAround = field.getCellsAround(i, j);
 				int count = 0;
 				for (Cell cell : cellsAround) // cells around
-					if (cell.getFlag() == -1)
+					if (cell.hasMine())
 						count++;
 				field.getCellAt(i, j).setFlag(count);
 			}
@@ -88,23 +90,29 @@ public class LandMine implements MineConstants , MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
+		if (gameOver) // Nothing will happens if the game had already over
+			return;
 		int column = getColumn(e.getX());
 		int row = getRow(e.getY());
-		Cell cell = field.getCellAt(row, column); // The cell the mouse clicked is at
-											// (x, y)
-		if (cell.getVisiblity() == true) //The cell is visible
+		Cell cell = field.getCellAt(row, column); // The cell the mouse clicked
+													// is at
+		// (x, y)
+		if (cell.getVisiblity() == true) // The cell is visible
 			return;
 		if (e.isMetaDown()) { // If it is clicked by the right button
 			if (cell.hasSign())
 				cell.removeSign();
 			else
 				cell.addSign();
-		}
-		else { //Clicked by the left button
+		} else { // Clicked by the left button
 			if (cell.hasSign())
 				return;
 			cell.setVisibility();
-			
+			if (cell.hasMine())
+				gameOver = true; // Lost
+			else if (cell.getFlag() == 0) {
+
+			}
 		}
 		frame.repaint();
 	}
@@ -113,29 +121,59 @@ public class LandMine implements MineConstants , MouseListener {
 	private int getColumn(int x) {
 		// TODO Auto-generated method stub
 		int w = view.getWidth() / nColumns;
-		return x/w;
+		return x / w;
 	}
 
 	/* Returns the row of the cell the mouse clicked at */
 	private int getRow(int y) {
 		// TODO Auto-generated method stub
 		int h = view.getHeight() / nRows;
-		return y/h;
+		return y / h;
+	}
+
+	/*
+	 * If the cell the mouse clicked at has no mine in it and its flag equals 0
+	 * (no cell around it has a mine) then all the cells with flag equals 0
+	 * around it will be visible, and even more, the cells with flags equals 0
+	 * around these cells will be visible, too. And the cells with flag equals 0
+	 * around them will be visible. This circle continued until all the cells around
+	 * these visible cells have flags greater than 0. Finally, these cells with flags
+	 * greater than 0 will also be visible but at this time no more cells(no matter
+	 * what their flags are)will be visible.
+	 * The process is like the Breadth-first search in graph
+	 */
+	public static void bfsVisible(Cell cell) {
+		ArrayList<Cell> collects = new ArrayList<Cell>(); //The cells had been collected
+		Queue<Cell> queue = new LinkedList<Cell>();
+		if(cell.getFlag() == 0) { //the flag of this cell equals 0
+			queue.offer(cell);
+			collects.add(cell); //Collects this cell
+		}
+		else
+			return;
+		while (!queue.isEmpty()) {
+			Cell c = queue.poll();
+			for (Cell cellsAround: field.getCellsAround(c)){ //the cells around c
+				
+			}
+		}
 	}
 	
-	
 	@Override
-	public void mouseEntered(MouseEvent e) { }
+	public void mouseEntered(MouseEvent e) {
+	}
 
 	@Override
-	public void mouseExited(MouseEvent e) { }
+	public void mouseExited(MouseEvent e) {
+	}
 
 	@Override
-	public void mousePressed(MouseEvent e) { }
+	public void mousePressed(MouseEvent e) {
+	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) { }
-	
+	public void mouseReleased(MouseEvent e) {
+	}
 
 	/* Private instance variables */
 
@@ -158,5 +196,5 @@ public class LandMine implements MineConstants , MouseListener {
 	private static View view;
 	private static JFrame frame;
 	private static Random rand = new Random();
-	
+	private static boolean gameOver;
 }
