@@ -18,6 +18,11 @@ public class Cell {
 		hasSign = false;
 	}
 
+	/** Returns the size of the cell */
+	public int getSize() {
+		return size;
+	}
+	
 	/** Returns the flag of this cell */
 	public int getFlag() {
 		return flag;

@@ -10,7 +10,7 @@ public class Test {
 		for (int i = 0; i < 9; i ++)
 			for (int j = 0; j < 9; j ++) {
 				f.place(i, j, new Cell(30, 8));
-				f.getMineAt(i, j).setVisibility();
+				f.getCellAt(i, j).setVisibility();
 			}
 		View v = new View(f);
 		JFrame fr = new JFrame();

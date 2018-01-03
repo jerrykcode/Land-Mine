@@ -12,24 +12,25 @@ import javax.swing.JFrame;
 public class LandMine implements MineConstants , MouseListener {
 
 	public LandMine() {
-		frame = new JFrame();
-		frame.addMouseListener(this);
+		view.addMouseListener(this);
 	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new LandMine();
 		init();
 		draw();
+		new LandMine();
 	}
 
 	/* Initialize parts of the instance variables to the constants. */
 	private static void init() {
 		// TODO Auto-generated method stub
+		viewHeight = VIEW_HEIGHT;
+		viewWidth = VIEW_WIDTH;
 		fwidth = FRAME_WIDTH;
 		fheight = FRAME_HEIGHT;
 		nMines = N_MINES;
-		mineSize = MINE_SIZE;
+		cellSize = MINE_SIZE;
 		nRows = N_MINE_ROW;
 		nColumns = N_MINE_COLUMN;
 	}
@@ -38,6 +39,8 @@ public class LandMine implements MineConstants , MouseListener {
 	private static void draw() {
 		initField();
 		view = new View(field);
+		view.setSize(viewWidth, viewHeight);
+		frame = new JFrame();
 		frame.setSize(fwidth, fheight);
 		frame.setTitle("Land Mine");
 		frame. setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
@@ -54,22 +57,22 @@ public class LandMine implements MineConstants , MouseListener {
 		field = new Field(nRows, nColumns);
 		for (int i = 0; i < field.getNRows(); i++)
 			for (int j = 0; j < field.getNColumns(); j++) {
-				field.place(i, j, new Cell(mineSize, 0));
+				field.place(i, j, new Cell(cellSize, 0));
 			}
 		/* Sets some of the cells to be mine randomly */
 		for (int i = 0; i < nMines; i++) {
 			int x = rand.nextInt(nRows);
 			int y = rand.nextInt(nColumns);
-			if (field.getMineAt(x, y).getFlag() != -1) // If the cell at (x,
+			if (field.getCellAt(x, y).getFlag() != -1) // If the cell at (x,
 														// y)is not a mine
-				field.getMineAt(x, y).setFlag(-1);// Sets it to be a mine
+				field.getCellAt(x, y).setFlag(-1);// Sets it to be a mine
 			else
 				i--;
 		}
 		/* Calculates the flag of other cells */
 		for (int i = 0; i < nRows; i++)
 			for (int j = 0; j < nColumns; j++) {
-				if (field.getMineAt(i, j).getFlag() == -1) // If this cell is a
+				if (field.getCellAt(i, j).getFlag() == -1) // If this cell is a
 															// mine
 					continue;
 				Cell[] cellsAround = field.getMinesAround(i, j);
@@ -77,7 +80,7 @@ public class LandMine implements MineConstants , MouseListener {
 				for (Cell cell : cellsAround) // cells around
 					if (cell.getFlag() == -1)
 						count++;
-				field.getMineAt(i, j).setFlag(count);
+				field.getCellAt(i, j).setFlag(count);
 			}
 	}
 
@@ -85,11 +88,9 @@ public class LandMine implements MineConstants , MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		double w = frame.getWidth() / nColumns; // The width of each cell
-		double h = frame.getHeight() / nRows; // The height of each cell
-		int x = (int) (e.getX() / w);
-		int y = (int) (e.getY() / h);
-		Cell cell = field.getMineAt(x, y); // The cell the mouse clicked is at
+		int column = getColumn(e.getX());
+		int row = getRow(e.getY());
+		Cell cell = field.getCellAt(row, column); // The cell the mouse clicked is at
 											// (x, y)
 		if (cell.getVisiblity() == true) //The cell is visible
 			return;
@@ -99,12 +100,30 @@ public class LandMine implements MineConstants , MouseListener {
 			else
 				cell.addSign();
 		}
-		else {
+		else { //Clicked by the left button
+			if (cell.hasSign())
+				return;
+			cell.setVisibility();
 			
 		}
 		frame.repaint();
 	}
 
+	/* Returns the column of the cell the mouse clicked at */
+	private int getColumn(int x) {
+		// TODO Auto-generated method stub
+		int w = view.getWidth() / nColumns;
+		return x/w;
+	}
+
+	/* Returns the row of the cell the mouse clicked at */
+	private int getRow(int y) {
+		// TODO Auto-generated method stub
+		int h = view.getHeight() / nRows;
+		return y/h;
+	}
+	
+	
 	@Override
 	public void mouseEntered(MouseEvent e) { }
 
@@ -124,10 +143,12 @@ public class LandMine implements MineConstants , MouseListener {
 	 * These variables will be initialized as the constants defined in
 	 * MineConstants.java
 	 */
+	private static int viewWidth;
+	private static int viewHeight;
 	private static int fwidth; // The width of the frame
 	private static int fheight; // The height of the frame
 	private static int nMines; // The number of mines
-	private static int mineSize; // The size(width&height) of the cell(a
+	private static int cellSize; // The size(width&height) of the cell(a
 									// rectangle)
 	private static int nRows; // The number of rows of cells in the field
 	private static int nColumns; // The number of columns in the field

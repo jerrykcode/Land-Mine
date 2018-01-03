@@ -33,7 +33,7 @@ public class Field {
 	}
 
 	/** Returns the cell at position(x, y) in the field */
-	public Cell getMineAt(int x, int y) {
+	public Cell getCellAt(int x, int y) {
 		return cells[x][y];
 	}
 
