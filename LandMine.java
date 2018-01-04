@@ -34,7 +34,7 @@ public class LandMine implements MineConstants, MouseListener {
 		cellSize = MINE_SIZE;
 		nRows = N_MINE_ROW;
 		nColumns = N_MINE_COLUMN;
-		gameOver = false;
+		gameOver = win = lost = false;
 	}
 
 	/* Draws the initial mines. */
@@ -108,13 +108,17 @@ public class LandMine implements MineConstants, MouseListener {
 			if (cell.hasSign())
 				return;
 			cell.setVisibility();
-			if (cell.hasMine())
+			if (cell.hasMine()) {
 				gameOver = true; // Lost
+				lost = true;
+			}
 			else if (cell.getFlag() == 0) {
-
+				bfsVisible(cell);
 			}
 		}
 		frame.repaint();
+		checkWin(); //Check if the player is win
+		
 	}
 
 	/* Returns the column of the cell the mouse clicked at */
@@ -136,29 +140,35 @@ public class LandMine implements MineConstants, MouseListener {
 	 * (no cell around it has a mine) then all the cells with flag equals 0
 	 * around it will be visible, and even more, the cells with flags equals 0
 	 * around these cells will be visible, too. And the cells with flag equals 0
-	 * around them will be visible. This circle continued until all the cells around
-	 * these visible cells have flags greater than 0. Finally, these cells with flags
-	 * greater than 0 will also be visible but at this time no more cells(no matter
-	 * what their flags are)will be visible.
-	 * The process is like the Breadth-first search in graph
+	 * around them will be visible. This circle continued until all the cells
+	 * around these visible cells have flags greater than 0. Finally, these
+	 * cells with flags greater than 0 will also be visible but at this time no
+	 * more cells(no matter what their flags are)will be visible. The process is
+	 * like the Breadth-first search in graph
 	 */
 	public static void bfsVisible(Cell cell) {
-		ArrayList<Cell> collects = new ArrayList<Cell>(); //The cells had been collected
+		ArrayList<Cell> collects = new ArrayList<Cell>(); // The cells had been
+															// collected
 		Queue<Cell> queue = new LinkedList<Cell>();
-		if(cell.getFlag() == 0) { //the flag of this cell equals 0
+		if (cell.getFlag() == 0) { // the flag of this cell equals 0
 			queue.offer(cell);
-			collects.add(cell); //Collects this cell
-		}
-		else
+			collects.add(cell); // Collects this cell
+		} else
 			return;
 		while (!queue.isEmpty()) {
 			Cell c = queue.poll();
-			for (Cell cellsAround: field.getCellsAround(c)){ //the cells around c
-				
+			for (Cell cellAround : field.getCellsAround(c)) { // the cells
+																// around c
+				if (!collects.contains(cellAround)) { // Not collect yet
+					cellAround.setVisibility();
+					if (cellAround.getFlag() == 0)
+						queue.offer(cellAround);
+					collects.add(cellAround);
+				}
 			}
 		}
 	}
-	
+
 	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
@@ -173,6 +183,23 @@ public class LandMine implements MineConstants, MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+	}
+
+	/* Returns true if the player win the game */
+	private static boolean checkWin() {
+		for (int i = 0; i < nRows; i++)
+			for (int j = 0; j < nColumns; j++) {
+				Cell cell = field.getCellAt(i, j);
+				if (cell.hasMine() && !cell.hasSign())	 // if the cell has a mine
+															// but has no flag
+					return false;
+				if (cell.getFlag() >= 0 && !cell.getVisiblity()) // if the cell has no
+																	// mine in it but
+																	//  it is not visible
+					return false;
+			}
+		win = gameOver = true;
+		return true;
 	}
 
 	/* Private instance variables */
@@ -197,4 +224,6 @@ public class LandMine implements MineConstants, MouseListener {
 	private static JFrame frame;
 	private static Random rand = new Random();
 	private static boolean gameOver;
+	private static boolean win;
+	private static boolean lost;
 }

@@ -4,7 +4,7 @@ public interface MineConstants {
 	
 	/** The number of mines */
 	
-	public static final int N_MINES = 50;
+	public static final int N_MINES = 20;
 	
 	/** The size (width and height) of the rectangle indicates a mine */
 	
